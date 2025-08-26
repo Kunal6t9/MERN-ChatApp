@@ -2,14 +2,16 @@ import mongoose from "mongoose";
 
 const userSchema = new mongoose.Schema(
   {
+    fullName: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     email: {
       type: String,
       required: true,
       unique: true,
-    },
-    fullName: {
-      type: String,
-      required: true,
+      lowercase: true,
     },
     password: {
       type: String,
@@ -18,7 +20,7 @@ const userSchema = new mongoose.Schema(
     },
     profilePic: {
       type: String,
-      default: "",
+      default: "", // store URL or path to image
     },
   },
   { timestamps: true }
