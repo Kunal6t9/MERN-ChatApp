@@ -1,6 +1,3 @@
-// src/pages/ChatPage.jsx
-import React from 'react';
-
 const ChatPage = () => {
   return (
     <div className="flex h-screen bg-gray-100 text-gray-800">
