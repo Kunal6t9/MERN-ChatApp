@@ -1,4 +1,3 @@
-// src/pages/LoginPage.jsx (similar changes as SignupPage.jsx)
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
