@@ -1,10 +1,9 @@
-// src/controllers/message.controller.js
 import Message from "../models/message.model.js";
 import Chat from "../models/chat.model.js";
 import User from "../models/user.model.js";
 import { io, getReceiverSocketId } from "../lib/socket.js";
 
-// @desc Get users for sidebar
+// Get users for sidebar
 export const getUsersForSidebar = async (req, res) => {
   try {
     const loggedInUserId = req.user._id;
@@ -18,7 +17,7 @@ export const getUsersForSidebar = async (req, res) => {
   }
 };
 
-// @desc Send a new message
+// Send a new message
 export const sendMessage = async (req, res) => {
   try {
     const { chatId, content } = req.body;
@@ -75,7 +74,7 @@ export const sendMessage = async (req, res) => {
   }
 };
 
-// @desc Get all messages in a chat
+// Get all messages in a chat
 export const getMessages = async (req, res) => {
   try {
     const { chatId } = req.params;
@@ -96,7 +95,7 @@ export const getMessages = async (req, res) => {
   }
 };
 
-// @desc Mark messages as read
+// Mark messages as read
 export const markAsRead = async (req, res) => {
   try {
     const { chatId } = req.params;

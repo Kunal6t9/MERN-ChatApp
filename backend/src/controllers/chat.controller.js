@@ -2,7 +2,7 @@
 import Chat from "../models/chat.model.js";
 import User from "../models/user.model.js";
 
-// @desc Create New Chat (1-to-1 or Group)
+// Create new chat (1-to-1 or Group)
 export const createChat = async (req, res) => {
   try {
     const { participants, name, isGroup } = req.body;
@@ -32,7 +32,7 @@ export const createChat = async (req, res) => {
   }
 };
 
-// @desc Get All Chats for User
+// Get all chats 
 export const getUserChats = async (req, res) => {
   try {
     const chats = await Chat.find({
@@ -48,7 +48,7 @@ export const getUserChats = async (req, res) => {
   }
 };
 
-// @desc Get a Single Chat by ID
+// Get a single chat by ID
 export const getChatById = async (req, res) => {
   try {
     const { chatId } = req.params;
@@ -65,7 +65,7 @@ export const getChatById = async (req, res) => {
   }
 };
 
-// @desc Add user to Group Chat
+// Add user to group chat
 export const addToGroup = async (req, res) => {
   try {
     const { chatId } = req.params;
@@ -88,7 +88,7 @@ export const addToGroup = async (req, res) => {
   }
 };
 
-// @desc Remove user from Group Chat
+// Remove user from group chat
 export const removeFromGroup = async (req, res) => {
   try {
     const { chatId } = req.params;

@@ -1,9 +1,8 @@
-// backend/controllers/auth.controller.js
 import User from "../models/user.model.js";
 import bcrypt from "bcryptjs";
 import { generateToken } from "../lib/utilis.js";
 
-// @desc Signup
+// Signup 
 export const signup = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
@@ -42,7 +41,7 @@ export const signup = async (req, res) => {
   }
 };
 
-// @desc Login
+// Login 
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -71,13 +70,13 @@ export const login = async (req, res) => {
   }
 };
 
-// @desc Logout
+// Logout 
 export const logout = (req, res) => {
   res.clearCookie("jwt", { httpOnly: true, secure: process.env.NODE_ENV === "production" });
   res.json({ message: "User logged out successfully" });
 };
 
-// @desc Check auth status
+// Checkauth 
 export const checkAuth = (req, res) => {
   try {
     res.status(200).json({
@@ -92,7 +91,7 @@ export const checkAuth = (req, res) => {
   }
 };
 
-// @desc Update Profile
+// Update Profile
 export const updateProfile = async (req, res) => {
   try {
     const { fullName, profilePic } = req.body;

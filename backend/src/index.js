@@ -6,6 +6,7 @@ import messageRoutes from "./routes/message.route.js";
 import chatroutes from "./routes/chat.route.js";
 import cookieParser from "cookie-parser";
 import { server, app } from "./lib/socket.js";
+import cors from "cors";
 
 dotenv.config();
 connectDB();
@@ -13,6 +14,11 @@ connectDB();
 // Middlewares
 app.use(express.json());
 app.use(cookieParser());
+
+app.use(cors({
+  origin: "http://localhost:5173",
+  credentials: true
+}))
 
 // Routes
 app.use("/api/auth", authRoutes);
