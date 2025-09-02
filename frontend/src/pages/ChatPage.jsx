@@ -1,20 +1,19 @@
+
+import Sidebar from '../components/chat/Sidebar';
+
 const ChatPage = () => {
   return (
     <div className="flex h-screen bg-gray-100 text-gray-800">
       {/* Sidebar for user list */}
       <div className="w-1/4 bg-white border-r border-gray-200">
-        {/* We will build the sidebar components here */}
-        <div className="p-4">
-          <h2 className="text-xl font-semibold mb-4">Chats</h2>
-          {/* User list will go here */}
-        </div>
+        <Sidebar />
       </div>
 
       {/* Main chat window */}
       <div className="w-3/4 flex flex-col">
         {/* Chat header */}
         <div className="bg-white border-b border-gray-200 p-4">
-          <h2 className="text-xl font-semibold">Selected User Name</h2>
+          <h2 className="text-xl font-semibold">Select a chat to begin...</h2>
         </div>
 
         {/* Message area */}

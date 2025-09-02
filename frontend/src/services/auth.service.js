@@ -1,22 +1,19 @@
-import axios from 'axios'
-
-const API_URL = "http://localhost:5001/api/auth/";
+import API from "./api.";
 
 export const signup = async (userData) => {
   try {
-    const response = await axios.post(API_URL + "signup",userData);
+    const response = await API.post("/auth/signup", userData);
     return response.data;
   } catch (error) {
-    console.log("SignUp failed .. Try again Later ",error.message);
+    throw error.response.data.message || "Signup failed";
   }
 };
 
 export const login = async (userData) => {
   try {
-    const response = await axios.post(API_URL + "login", userData);
+    const response = await API.post("/auth/login", userData);
     return response.data;
   } catch (error) {
-    console.log("Login Failed.. Try again later ",error.message);
+    throw error.response.data.message || "Login failed";
   }
 };
-
