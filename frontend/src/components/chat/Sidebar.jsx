@@ -1,4 +1,5 @@
 import useGetUsers from "../../hooks/useGetUsers";
+import LogoutButton from "./LogoutButton";
 
 const Sidebar = () => {
   const {loading,users} = useGetUsers();
@@ -32,8 +33,10 @@ const Sidebar = () => {
           )}
         </div>
       )}
+      <div className="mt-auto">
+        <LogoutButton />
+      </div>
     </div>
-
   );
 };
 
