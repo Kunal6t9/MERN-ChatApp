@@ -1,4 +1,4 @@
-import { RiChat3Line } from "react-icons/ri"; // Import a chat icon
+import { RiChat3Line } from "react-icons/ri"; 
 
 const AppBackground = () => {
   return (

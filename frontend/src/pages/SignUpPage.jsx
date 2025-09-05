@@ -1,7 +1,7 @@
-import { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import { useAuthContext } from "../context/AuthContext"
-import { signup } from "../services/auth.service"
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuthContext } from '../context/AuthContext'
+import { signup } from '../services/auth.service'
 
 const SignUpPage = () => {
   const [formData, setFormData] = useState({
@@ -27,7 +27,7 @@ const SignUpPage = () => {
     try {
       const userData = await signup(formData);
       setAuthUser(userData);
-      navigate("/") // navigate to chat page on success
+      navigate("/") 
     } catch (err) {
       setError(err);
       console.error(err);

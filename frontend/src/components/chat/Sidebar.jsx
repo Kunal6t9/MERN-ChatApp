@@ -1,9 +1,11 @@
-import useGetUsers from "../../hooks/useGetUsers";
-import LogoutButton from "./LogoutButton";
+import useGetUsers from '../../hooks/useGetUsers';
+import LogoutButton from './LogoutButton';
+import { useAuthContext } from '../../context/AuthContext';
+import { FaUserCircle } from "react-icons/fa";
 
 const Sidebar = () => {
-  const {loading,users} = useGetUsers();
-
+  const { loading, users } = useGetUsers();
+  const { selectedUser, setSelectedUser } = useAuthContext();
 
   return (
     <div className="flex flex-col p-4 overflow-y-auto h-full">
@@ -16,11 +18,18 @@ const Sidebar = () => {
             users.map((user) => (
               <div
                 key={user._id}
-                className="flex items-center p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors duration-200"
+                className={`flex items-center p-2 rounded-lg hover:bg-gray-200 cursor-pointer transition-colors duration-200 ${
+                  selectedUser && selectedUser._id === user._id ? "bg-gray-200" : ""
+                }`}
+                onClick={() => setSelectedUser(user)}
               >
                 <div className="avatar mr-3">
-                  <div className="w-10 rounded-full">
-                    <img src={user.profilePic} alt="User Avatar" />
+                  <div className="w-10 rounded-full flex items-center justify-center bg-gray-300">
+                    {user.profilePic ? (
+                      <img src={user.profilePic} alt="User Avatar" />
+                    ) : (
+                      <FaUserCircle className="w-full h-full text-gray-500" />
+                    )}
                   </div>
                 </div>
                 <div>
@@ -40,4 +49,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar
+export default Sidebar;

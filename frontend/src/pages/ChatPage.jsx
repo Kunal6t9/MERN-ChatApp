@@ -1,33 +1,20 @@
-
-import Sidebar from '../components/chat/Sidebar';
+import Sidebar from '../components/chat/Sidebar'
+import ChatContainer from '../components/chat/ChatContainer'
 
 const ChatPage = () => {
   return (
-    <div className="flex h-screen bg-gray-100 text-gray-800">
+    <div className="flex w-full h-screen bg-gray-100">
       {/* Sidebar for user list */}
       <div className="w-1/4 bg-white border-r border-gray-200">
         <Sidebar />
       </div>
 
       {/* Main chat window */}
-      <div className="w-3/4 flex flex-col">
-        {/* Chat header */}
-        <div className="bg-white border-b border-gray-200 p-4">
-          <h2 className="text-xl font-semibold">Select a chat to begin...</h2>
-        </div>
-
-        {/* Message area */}
-        <div className="flex-1 overflow-y-auto p-4 bg-gray-50">
-          {/* Messages will be displayed here */}
-        </div>
-
-        {/* Message input */}
-        <div className="bg-white border-t border-gray-200 p-4">
-          {/* Message input field and send button */}
-        </div>
+      <div className="w-3/4">
+        <ChatContainer />
       </div>
     </div>
   );
 };
 
-export default ChatPage;
+export default ChatPage

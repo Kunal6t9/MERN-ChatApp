@@ -1,16 +1,17 @@
 import { createContext, useContext, useState } from "react";
 
-const AuthContext = createContext();
+export const AuthContext = createContext();
 
 export const useAuthContext = () => {
   return useContext(AuthContext);
 };
 
 export const AuthContextProvider = ({ children }) => {
-  const [authUser, setAuthUser] = useState(null); // no user is  logged in currently
+  const [authUser, setAuthUser] = useState(JSON.parse(localStorage.getItem("chat-user")) || null);
+  const [selectedUser, setSelectedUser] = useState(null);
 
   return (
-    <AuthContext.Provider value={{ authUser, setAuthUser }}>
+    <AuthContext.Provider value={{ authUser, setAuthUser, selectedUser, setSelectedUser }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import API from "../services/api.";
+import { useEffect, useState } from 'react'
+import API from '../services/api.'
 
 const useGetUsers = () => {
   const [loading, setLoading] = useState(false);
