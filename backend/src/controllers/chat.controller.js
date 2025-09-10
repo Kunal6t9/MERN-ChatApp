@@ -1,6 +1,4 @@
-// src/controllers/chat.controller.js
 import Chat from "../models/chat.model.js";
-import User from "../models/user.model.js";
 
 // Create new chat (1-to-1 or Group)
 export const createChat = async (req, res) => {
@@ -9,6 +7,21 @@ export const createChat = async (req, res) => {
 
     if (!participants || participants.length < 2) {
       return res.status(400).json({ message: "At least 2 participants are required" });
+    }
+
+    // Check if a 1-to-1 chat already exists
+    if (!isGroup) {
+      const existingChat = await Chat.findOne({
+        isGroup: false,
+        participants: {
+          $size: 2,
+          $all: participants,
+        },
+      }).populate("participants", "fullName email");
+      
+      if (existingChat) {
+        return res.status(200).json(existingChat); // Return existing chat if found
+      }
     }
 
     const chatData = {
@@ -31,6 +44,7 @@ export const createChat = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 // Get all chats 
 export const getUserChats = async (req, res) => {

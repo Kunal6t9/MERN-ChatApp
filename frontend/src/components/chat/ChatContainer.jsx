@@ -1,13 +1,16 @@
 import { useAuthContext } from '../../context/AuthContext';
 import Messages from './Messages';
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle } from 'react-icons/fa';
+import MessageInput from './MessageInput';
+import useCreateChat from '../../hooks/useCreateChat';
 
 const ChatContainer = () => {
   const { selectedUser } = useAuthContext();
+  const {chatId} = useCreateChat();
 
   return (
     <div className="w-full flex flex-col h-full bg-gray-50 text-gray-800">
-      {selectedUser ? (
+      {selectedUser && chatId ? ( // <-- Conditional rendering now depends on selectedUser and chatId
         <>
           <div className="bg-white border-b border-gray-200 p-4">
             <div className="flex items-center">
@@ -24,10 +27,10 @@ const ChatContainer = () => {
             </div>
           </div>
           <div className="flex-1 overflow-y-auto p-4">
-            <Messages />
+            <Messages chatId={chatId} /> {/* <-- Pass chatId as a prop */}
           </div>
           <div className="bg-white border-t border-gray-200 p-4">
-            {/* Message input will go here */}
+            <MessageInput chatId={chatId} /> {/* <-- Pass chatId as a prop */}
           </div>
         </>
       ) : (

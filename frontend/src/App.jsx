@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import { useAuthContext } from "./context/AuthContext";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignUpPagenpm ";
+import SignupPage from "./pages/SignUpPage";
 import ChatPage from "./pages/ChatPage";
 import AppBackground from "./components/common/AppBackground";
 
