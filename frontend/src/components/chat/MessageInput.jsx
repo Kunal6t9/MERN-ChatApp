@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { FaPaperPlane } from 'react-icons/fa'
-import API from '../../services/api.'
+import API from '../../services/api.js'
 import { useAuthContext } from '../../context/AuthContext'
 import { useSocketContext } from '../../context/SocketContext'
 import { toast } from 'react-hot-toast'
@@ -17,13 +17,15 @@ const MessageInput = ({ chatId }) => {
 
     setLoading(true);
     try {
-      const res = await API.post(`/messages/send/${chatId}`, { content: message });
+      console.log("Sending message to chatId:", chatId);
+      const res = await API.post(`/messages/send/${chatId}`, { 
+        content: message 
+      });
+      console.log("Message sent successfully:", res.data);
       setMessage("");
-      // Send the new message via Socket.IO
-      if (socket) {
-        socket.emit("sendMessage", res.data);
-      }
+      // No need to emit socket event - backend handles this automatically
     } catch (error) {
+      console.error("Error sending message:", error);
       toast.error(error.message || "Failed to send message");
     } finally {
       setLoading(false);

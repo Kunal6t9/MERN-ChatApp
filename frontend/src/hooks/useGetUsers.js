@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import API from '../services/api.'
+import API from '../services/api.js'
 
 const useGetUsers = () => {
   const [loading, setLoading] = useState(false);

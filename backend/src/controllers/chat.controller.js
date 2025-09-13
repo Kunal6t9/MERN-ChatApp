@@ -5,29 +5,55 @@ export const createChat = async (req, res) => {
   try {
     const { participants, name, isGroup } = req.body;
 
+    console.log("Creating/finding chat with participants:", participants);
+
     if (!participants || participants.length < 2) {
       return res.status(400).json({ message: "At least 2 participants are required" });
     }
 
     // Check if a 1-to-1 chat already exists
     if (!isGroup) {
+      console.log("Looking for existing 1-to-1 chat...");
+      console.log("Searching with participants:", participants);
+      
+      // Sort participants to ensure consistent lookup
+      const sortedParticipants = participants.sort();
+      console.log("Sorted participants:", sortedParticipants);
+      
       const existingChat = await Chat.findOne({
-        isGroup: false,
+        isGroupChat: false,
         participants: {
           $size: 2,
-          $all: participants,
+          $all: sortedParticipants,
         },
       }).populate("participants", "fullName email");
       
       if (existingChat) {
+        console.log("Found existing chat:", existingChat._id);
         return res.status(200).json(existingChat); // Return existing chat if found
+      } else {
+        console.log("No existing chat found, creating new one");
+        console.log("Checking all existing chats for these users...");
+        
+        // Debug: Find any chats involving these participants
+        const debugChats = await Chat.find({
+          participants: { $in: sortedParticipants }
+        });
+        console.log("All chats involving these users:", debugChats.map(c => ({
+          id: c._id,
+          participants: c.participants,
+          isGroupChat: c.isGroupChat
+        })));
       }
     }
 
+    // Sort participants before creating new chat too
+    const sortedParticipants = participants.sort();
+    
     const chatData = {
-      participants,
-      isGroup: isGroup || false,
-      name: isGroup ? name : undefined,
+      participants: sortedParticipants,
+      isGroupChat: isGroup || false,
+      chatName: isGroup ? name : undefined,
     };
 
     const newChat = new Chat(chatData);
@@ -38,6 +64,7 @@ export const createChat = async (req, res) => {
       "fullName email"
     );
 
+    console.log("Created new chat:", populatedChat._id);
     res.status(201).json(populatedChat);
   } catch (error) {
     console.error("Create Chat Error:", error);

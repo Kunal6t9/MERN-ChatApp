@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { FaEye, FaEyeSlash } from 'react-icons/fa'
 import { useAuthContext } from '../context/AuthContext'
 import { signup } from '../services/auth.service'
 
@@ -12,6 +13,7 @@ const SignUpPage = () => {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [showPassword, setShowPassword] = useState(false);
   const {setAuthUser} = useAuthContext();
   const navigate = useNavigate();
 
@@ -73,14 +75,23 @@ const SignUpPage = () => {
           <label className="label">
             <span className="text-base label-text text-gray-700">Password</span>
           </label>
-          <input
-            type="password"
-            name="password"
-            placeholder="Enter Password"
-            className="w-full input input-bordered h-12 bg-gray-200 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={formData.password}
-            onChange={handleChange}
-          />
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              name="password"
+              placeholder="Enter Password"
+              className="w-full input input-bordered h-12 bg-gray-200 text-gray-800 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 pr-12"
+              value={formData.password}
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-600 hover:text-gray-800"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
         </div>
         <Link
           to="/login"

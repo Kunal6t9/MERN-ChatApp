@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react'
-import API from '../../services/api.'
-import { useSocketContext } from '../../context/SocketContext'
-import { useAuthContext } from '../../context/AuthContext'
+import { useEffect, useState } from "react";
+import API from "../../services/api.js";
+import { useSocketContext } from "../../context/SocketContext";
+import { useAuthContext } from "../../context/AuthContext";
 
-const Messages = ({ chatId }) => { // chatId as a prop
+const Messages = ({ chatId }) => {
+  // chatId as a prop
   const [loading, setLoading] = useState(false);
   const [messages, setMessages] = useState([]);
   const { authUser } = useAuthContext();
@@ -30,16 +31,25 @@ const Messages = ({ chatId }) => { // chatId as a prop
   // Listen for new messages
   useEffect(() => {
     if (socket) {
+      console.log("Setting up socket listener for newMessage");
       socket.on("newMessage", (newMessage) => {
+        console.log("Received newMessage:", newMessage);
+        console.log("Current chatId:", chatId);
+        console.log("Message chatId:", newMessage.chat._id);
+
         // Only update if the message belongs to the current chat
         if (newMessage.chat._id === chatId) {
-          setMessages(prevMessages => [...prevMessages, newMessage]);
+          console.log("Adding message to current chat");
+          setMessages((prevMessages) => [...prevMessages, newMessage]);
+        } else {
+          console.log("Message not for current chat");
         }
       });
     }
 
     return () => {
       if (socket) {
+        console.log("Cleaning up socket listener");
         socket.off("newMessage");
       }
     };
@@ -53,12 +63,29 @@ const Messages = ({ chatId }) => { // chatId as a prop
     <div className="flex flex-col space-y-4">
       {messages.length > 0 ? (
         messages.map((message) => (
-          <div key={message._id} className="p-2 rounded-lg bg-blue-500 text-white self-start">
-            {message.content}
+          <div
+            key={message._id}
+            className={`p-2 rounded-lg max-w-xs ${
+              message.sender._id === authUser._id
+                ? "bg-blue-500 text-white self-end"
+                : "bg-gray-300 text-gray-800 self-start"
+            }`}
+          >
+            {message.messageType === "image" ? (
+              <img
+                src={message.image}
+                alt="Shared image"
+                className="max-w-full rounded"
+              />
+            ) : (
+              <span>{message.text}</span>
+            )}
           </div>
         ))
       ) : (
-        <div className="text-center text-gray-500">No messages yet. Say hi!</div>
+        <div className="text-center text-gray-500">
+          No messages yet. Say hi!
+        </div>
       )}
     </div>
   );

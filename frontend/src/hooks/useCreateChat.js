@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import API from "../services/api.";
+import API from "../services/api.js";
 import { useAuthContext } from "../context/AuthContext";
 
 const useCreateChat = () => {
@@ -27,10 +27,13 @@ const useCreateChat = () => {
       console.log("Logged-in user ID:", authUser._id);
       console.log("Selected user ID:", selectedUser._id);
 
-      const participants = [authUser._id, selectedUser._id];
+      // Sort participants to ensure consistent order for chat lookup
+      const participants = [authUser._id, selectedUser._id].sort();
 
       try {
+        console.log("Requesting chat with participants:", participants);
         const res = await API.post("/chat", { participants }, { signal });
+        console.log("Got chat response:", res.data._id);
         setChatId(res.data._id);
       } catch (error) {
         if (error.name === "CanceledError") {

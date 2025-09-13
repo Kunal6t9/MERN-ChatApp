@@ -20,15 +20,31 @@ export const getUsersForSidebar = async (req, res) => {
 // Send a new message
 export const sendMessage = async (req, res) => {
   try {
-    const { chatId, content } = req.body;
+    const chatId = req.params.id; // Get chatId from route parameter
+    const { content } = req.body;
     const senderId = req.user._id;
 
+    console.log(
+      "Sending message - chatId:",
+      chatId,
+      "content:",
+      content,
+      "sender:",
+      senderId
+    );
+
     if (!chatId || !content) {
-      return res.status(400).json({ message: "Chat ID and content are required" });
+      return res
+        .status(400)
+        .json({ message: "Chat ID and content are required" });
     }
 
     // Determine if the content is an image URL or text
-    const isImageUrl = content.startsWith("http") && (content.endsWith(".jpg") || content.endsWith(".png") || content.endsWith(".gif"));
+    const isImageUrl =
+      content.startsWith("http") &&
+      (content.endsWith(".jpg") ||
+        content.endsWith(".png") ||
+        content.endsWith(".gif"));
 
     const newMessageData = {
       sender: senderId,
@@ -58,11 +74,26 @@ export const sendMessage = async (req, res) => {
 
     // Emit the message to all participants in the chat
     const chat = message.chat;
+    console.log(
+      "Emitting message to participants:",
+      chat.participants.map((p) => p._id)
+    );
+
     if (chat && chat.participants) {
       chat.participants.forEach((participant) => {
-        const receiverSocketId = getReceiverSocketId(participant._id.toString());
+        const receiverSocketId = getReceiverSocketId(
+          participant._id.toString()
+        );
+        console.log(
+          `Participant ${participant._id} socketId:`,
+          receiverSocketId
+        );
+
         if (receiverSocketId) {
+          console.log(`Emitting newMessage to socket ${receiverSocketId}`);
           io.to(receiverSocketId).emit("newMessage", message);
+        } else {
+          console.log(`No socket found for participant ${participant._id}`);
         }
       });
     }
@@ -70,7 +101,9 @@ export const sendMessage = async (req, res) => {
     res.status(201).json(message);
   } catch (error) {
     console.error("Error in sendMessage:", error.message);
-    res.status(500).json({ message: "Failed to send message", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to send message", error: error.message });
   }
 };
 
@@ -91,7 +124,9 @@ export const getMessages = async (req, res) => {
     res.json(messages);
   } catch (error) {
     console.error("Error in getMessages:", error.message);
-    res.status(500).json({ message: "Failed to get messages", error: error.message });
+    res
+      .status(500)
+      .json({ message: "Failed to get messages", error: error.message });
   }
 };
 
